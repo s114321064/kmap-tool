@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>4x4 K-map with Labels</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        td {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #333;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            transition: 0.15s;
+        }
+
+        /* 可點擊的格子樣式 */
+        .cell-clickable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+            .cell-clickable:hover {
+                background-color: #f0f0f0;
+            }
+
+        /* 標籤（邊框）樣式 */
+        .label {
+            background-color: #eee;
+            color: #555;
+            font-size: 16px;
+            border: none; /* 標籤不顯示邊框，或是你可以視需求保留 */
+        }
+
+        /* 左上角斜線格樣式 */
+        .header-cell {
+            font-size: 14px;
+            border: none;
+            background: none;
+        }
+
+        /* 被點擊為 1 的顏色 */
+        .bg-1 {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>4x4 Karnaugh Map Tool</h1>
+    <p>AB \ CD 座標模式</p>
+
+    <table id="myTable">
+    </table>
+
+    <script>
+        const table = document.getElementById('myTable');
+        const grayCode = ["00", "01", "11", "10"];
+
+        for (let i = 0; i < 5; i++) {
+            let row = table.insertRow();
+            for (let j = 0; j < 5; j++) {
+                let cell = row.insertCell();
+
+                if (i === 0 && j === 0) {
+                    // 左上角標示區
+                    cell.innerHTML = "AB\\CD";
+                    cell.className = "header-cell";
+                }
+                else if (i === 0) {
+                    // 第一列的標籤 (CD)
+                    cell.innerHTML = grayCode[j - 1];
+                    cell.className = "label";
+                }
+                else if (j === 0) {
+                    // 第一欄的標籤 (AB)
+                    cell.innerHTML = grayCode[i - 1];
+                    cell.className = "label";
+                }
+                else {
+                    // 內容區：可點擊切換 0/1
+                    cell.innerHTML = "0";
+                    cell.className = "cell-clickable";
+                    cell.onclick = function () {
+                        if (this.innerHTML === "0") {
+                            this.innerHTML = "1";
+                            this.className = "cell-clickable bg-1";
+                        } else {
+                            this.innerHTML = "0";
+                            this.className = "cell-clickable";
+                        }
+                    };
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
